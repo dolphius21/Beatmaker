@@ -91,6 +91,12 @@ svg {
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.5s ease;
+  outline: none;
+  border-radius: .5rem;
+}
+
+.mute.active {
+  background: rgb(182,182,182);
 }
 
 .pad {
@@ -105,12 +111,56 @@ svg {
   border: none;
   margin-top: 3rem;
   cursor: pointer;
+  border-radius: .5rem;
 }
 
 select {
   padding: 1rem;
   margin-left: 1rem;
   font-size: 1rem;
+}
+
+.tempo {
+  margin: 3rem;
+  width: 50%;
+}
+.tempo-slider {
+  width: 100%;
+  margin: 0.7px 0;
+  background-color: transparent;
+  -webkit-appearance: none;
+}
+
+.tempo-slider:focus {
+  outline: none;
+}
+
+.tempo-slider::-webkit-slider-runnable-track {
+  background: #444;
+  border: 0;
+  width: 100%;
+  height: 31px;
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.tempo-slider::-webkit-slider-thumb {
+  margin-top: 3.1px;
+  width: 34px;
+  height: 25px;
+  background: #fff;
+  border: 2.9px solid #ddd;
+  border-radius: 28px;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+
+
+.tempo p {
+  font-size: 1.5rem;
+  margin: 2rem;
+  text-align: center;
 }
 
 @keyframes playTrack {
