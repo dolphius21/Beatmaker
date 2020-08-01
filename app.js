@@ -1,117 +1,171 @@
 class DrumKit {
-  constructor() {
+  constructor () {
     this.pads = document.querySelectorAll('.pad')
     this.playBtn = document.querySelector('.play')
-    this.currentKick = './sounds/kick-classic.wav'
-    this.currentSnare = './sounds/snare-acoustic01.wav'
-    this.currentHihat = './sounds/hihat-acoustic01.wav'
-    this.kickAudio = document.querySelector('.kick-sound')
-    this.snareAudio = document.querySelector('.snare-sound')
+    this.clapAudio = document.querySelector('.clap-sound')
     this.hihatAudio = document.querySelector('.hihat-sound')
-    this.index = 0;
-    this.bpm = 150;
-    this.isPlaying = null;
+    this.openhatAudio = document.querySelector('.openhat-sound')
+    this.snareAudio = document.querySelector('.snare-sound')
+    this.tomAudio = document.querySelector('.tom-sound')
+    this.kickAudio = document.querySelector('.kick-sound')
+    this.percAudio = document.querySelector('.perc-sound')
+    this.index = 0
+    this.bpm = 150
+    this.isPlaying = null
     this.selects = document.querySelectorAll('select')
     this.muteBtns = document.querySelectorAll('.mute')
     this.tempoSlider = document.querySelector('.tempo-slider')
   }
 
-  activePad() {
+  activePads() {
+    // to toggle active
     this.classList.toggle('active');
-
   }
 
   repeat() {
-    let steps = this.index % 8;
-    const activePads = document.querySelectorAll(`.b${steps}`)
-    // Loop over the pads
-    activePads.forEach(pad => {
-      pad.style.animation = `playTrack 0.3s alternate ease-in-out 2`;
-      // Check if pad is active
-      if (pad.classList.contains('active')) {
-        if (pad.classList.contains('kick-pad')) {
-          this.kickAudio.currentTime = 0;
-          this.kickAudio.play();
+    // to repeat beats
+    const beats = this.index % 8;
+    this.index++;
+    const activeBeats = document.querySelectorAll(`.b${beats}`);
+    activeBeats.forEach(beat => {
+      beat.style.animation = `playTrack 0.1s alternate ease-out 2`;
+      // check if beat is active
+      if (beat.classList.contains('active')) {
+        // check what sound is active
+        if (beat.classList.contains('clap-pad')) {
+          this.clapAudio.currentTime = 0;
+          this.clapAudio.play();
         }
-        if (pad.classList.contains('snare-pad')) {
-          this.snareAudio.currentTime = 0;
-          this.snareAudio.play();
-        }
-        if (pad.classList.contains('hihat-pad')) {
+        if (beat.classList.contains('hihat-pad')) {
           this.hihatAudio.currentTime = 0;
           this.hihatAudio.play();
         }
+        if (beat.classList.contains('openhat-pad')) {
+          this.openhatAudio.currentTime = 0;
+          this.openhatAudio.play();
+        }
+        if (beat.classList.contains('snare-pad')) {
+          this.snareAudio.currentTime = 0;
+          this.snareAudio.play();
+        }
+        if (beat.classList.contains('tom-pad')) {
+          this.tomAudio.currentTime = 0;
+          this.tomAudio.play();
+        }
+        if (beat.classList.contains('kick-pad')) {
+          this.kickAudio.currentTime = 0;
+          this.kickAudio.play();
+        }
+        if (beat.classList.contains('perc-pad')) {
+          this.percAudio.currentTime = 0;
+          this.percAudio.play();
+        }
       }
     });
-    this.index++;
   }
-  
+
   start() {
-    const interval = (60/this.bpm) * 1000;
-    // if it is playing
+    // set interval per beat
+    const interval = (60 / this.bpm) * 1000;
+    // check if this.isPlaying = null;
     if (!this.isPlaying) {
+      // if true add interval
       this.isPlaying = setInterval(() => {
         this.repeat();
       }, interval);
+      // Update text of the button
+      this.playBtn.innerText = 'Pause';
     } else {
-      // if playing
+      // if false clear interval
       clearInterval(this.isPlaying);
       this.isPlaying = null;
-    }
-  }
-
-  updateBtn() {
-    if (!this.isPlaying) {
+      // Update text of the button
       this.playBtn.innerText = 'Play';
-      this.playBtn.classList.add('active');
-    } else {
-      this.playBtn.innerText = 'Pause';
-      this.playBtn.classList.remove('active');
     }
   }
 
-  changeSound(e) {
+  changeAudio(e) {
     const selectionName = e.target.name;
     const selectionValue = e.target.value;
-    switch(selectionName) {
-      case 'kick-select':
-        this.kickAudio.src = selectionValue;
-        break;
-      case 'snare-select':
-        this.snareAudio.src = selectionValue;
-        break;
+    switch (selectionName) {
+      case 'clap-select':
+        this.clapAudio.src = selectionValue;
+      break;
       case 'hihat-select':
         this.hihatAudio.src = selectionValue;
-        break;
+      break;
+      case 'openhat-select':
+        this.openhatAudio.src = selectionValue;
+      break;
+      case 'snare-select':
+        this.snareAudio.src = selectionValue;
+      break;
+      case 'tom-select':
+        this.tomAudio.src = selectionValue;
+      break;
+      case 'kick-select':
+        this.kickAudio.src = selectionValue;
+      break;
+      case 'perc-select':
+        this.percAudio.src = selectionValue;
+      break;
     }
   }
 
-  mute(e) {
+  muteAudio(e) {
+    console.log(e.target.firstElement);
     const muteIndex = e.target.getAttribute('data-track');
     e.target.classList.toggle('active');
+    // check if target is active
     if (e.target.classList.contains('active')) {
+      e.target.firstElementChild.className = 'fas fa-volume-mute';
       switch(muteIndex) {
-        case '0': 
-          this.kickAudio.volume = 0;
-          break;
-        case '1': 
-          this.snareAudio.volume = 0;
-          break;
-        case '2': 
+        case '0' :
+          this.clapAudio.volume = 0;
+        break;
+        case '1' :
           this.hihatAudio.volume = 0;
-          break;
+        break;
+        case '2' :
+          this.openhatAudio.volume = 0;
+        break;
+        case '3' :
+          this.snareAudio.volume = 0;
+        break;
+        case '4' :
+          this.tomAudio.volume = 0;
+        break;
+        case '5' :
+          this.kickAudio.volume = 0;
+        break;
+        case '6' :
+          this.percAudio.volume = 0;
+        break;
       }
     } else {
+      e.target.firstElementChild.className = 'fas fa-volume-up';
       switch(muteIndex) {
-        case '0': 
-          this.kickAudio.volume = 1;
-          break;
-        case '1': 
-          this.snareAudio.volume = 1;
-          break;
-        case '2': 
+        case '0' :
+          this.clapAudio.volume = 1;
+        break;
+        case '1' :
           this.hihatAudio.volume = 1;
-          break;
+        break;
+        case '2' :
+          this.openhatAudio.volume = 1;
+        break;
+        case '3' :
+          this.snareAudio.volume = 1;
+        break;
+        case '4' :
+          this.tomAudio.volume = 1;
+        break;
+        case '5' :
+          this.kickAudio.volume = 1;
+        break;
+        case '6' :
+          this.percAudio.volume = 1;
+        break;
       }
     }
   }
@@ -125,42 +179,44 @@ class DrumKit {
   updateTempo() {
     clearInterval(this.isPlaying);
     this.isPlaying = null;
+    const playBtn = document.querySelector('.play');
     if (!this.isPlaying) {
       this.start();
     }
   }
 }
 
-const drumKit = new DrumKit();
+// Instantiate DrumKit object
+const drumkit = new DrumKit();
 
-drumKit.pads.forEach(pad => {
-  pad.addEventListener('click', drumKit.activePad);
+// Event Listeners
+drumkit.pads.forEach(pad => {
+  pad.addEventListener('click', drumkit.activePads);
   pad.addEventListener('animationend', () => {
     pad.style.animation = '';
   });
 });
 
-drumKit.playBtn.addEventListener('click', () => {
-  drumKit.start();
-  drumKit.updateBtn();
+drumkit.playBtn.addEventListener('click', () => {
+  drumkit.start();
 });
 
-drumKit.selects.forEach(select => {
+drumkit.selects.forEach(select => {
   select.addEventListener('change', (e) => {
-    drumKit.changeSound(e);
+    drumkit.changeAudio(e);
   });
 });
 
-drumKit.muteBtns.forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    drumKit.mute(e);
+drumkit.muteBtns.forEach(mute => {
+  mute.addEventListener('click', (e) => {
+    drumkit.muteAudio(e);
   });
 });
 
-drumKit.tempoSlider.addEventListener('input', (e) => {
-  drumKit.changeTempo(e);
+drumkit.tempoSlider.addEventListener('input', (e) => {
+  drumkit.changeTempo(e);
 });
 
-drumKit.tempoSlider.addEventListener('change', (e) => {
-  drumKit.updateTempo(e);
+drumkit.tempoSlider.addEventListener('change', () => {
+  drumkit.updateTempo();
 });
